@@ -25,7 +25,7 @@ class RouterUsuario(APIRouter):
                 'data': result
             }, status_code=200)
 
-        @self.get("/login", tags=['Usuarios'])
+        @self.POST("/login", tags=['Usuarios'])
         def iniciar_sesion(email: str, password: str, response: Response):
             try:
                 UsuarioRepository.open_transaction()
