@@ -1,4 +1,5 @@
-from typing import Union, Annotated
+from typing import Union
+from typing_extensions import Annotated
 
 from fastapi import APIRouter, HTTPException, Response, Form
 from starlette.responses import JSONResponse
