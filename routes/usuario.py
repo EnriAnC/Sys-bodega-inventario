@@ -1,6 +1,6 @@
-from typing import Union
+from typing import Union, Annotated
 
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Response, Form
 from starlette.responses import JSONResponse
 
 from repository.bodeguero import BodegueroRepository
@@ -26,7 +26,7 @@ class RouterUsuario(APIRouter):
             }, status_code=200)
 
         @self.post("/login", tags=['Usuarios'])
-        def iniciar_sesion(email: str, password: str, response: Response):
+        def iniciar_sesion(email: Annotated[str, Form()], password: Annotated[str, Form()], response: Response):
             try:
                 UsuarioRepository.open_transaction()
                 user = UsuarioRepository.readByEmail(email)
