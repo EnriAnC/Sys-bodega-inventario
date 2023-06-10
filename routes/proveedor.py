@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
-from database.postgre_db import CursorPG
+from database.cursor_pg import CursorPG
 from models.proveedor import Proveedor
 
 router = APIRouter()
