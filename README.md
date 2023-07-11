@@ -29,10 +29,9 @@ cd Sys-bodega-inventario
     ~~~
     pip install virtualenv
     ~~~
-    - Procede
-    ~~~
-    virtualenv venv
-    ~~~
+~~~
+virtualenv venv
+~~~
 4. Activa el entorno virtual:
 ~~~
 source venv/bin/activate
