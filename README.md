@@ -33,7 +33,9 @@ virtualenv venv
 ~~~
 4. Activa el entorno virtual:
 ~~~
-source venv/bin/activate
+(Linux/Mac): source venv/bin/activate
+(Window): .venv\Scripts\activate
+(git bash): source venv/Scripts/activate
 ~~~
 5. Instala las dependencias del proyecto:
 ~~~
