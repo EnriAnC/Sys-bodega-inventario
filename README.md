@@ -26,6 +26,7 @@ cd Sys-bodega-inventario
 ~~~
 3. Crea un entorno virtual para el proyecto:
 ~~~
+(si no tienes instalado virtualenv) pip install virtualenv
 virtualenv venv
 ~~~
 4. Activa el entorno virtual:
