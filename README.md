@@ -25,10 +25,9 @@ git clone https://github.com/EnriAnC/Sys-bodega-inventario.git
 cd Sys-bodega-inventario
 ~~~
 3. Crea un entorno virtual para el proyecto:
-    - Si no tienes instalado virtualenv:
-    ~~~
-    pip install virtualenv
-    ~~~
+~~~
+pip install virtualenv
+~~~
 ~~~
 virtualenv venv
 ~~~
