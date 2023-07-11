@@ -1,14 +1,16 @@
+from uuid import uuid4
 from psycopg2 import pool
 
 
-class PsycoPG2Database:
+class PGDatabase:
+    
     def __init__(self, config):
         self.__host = config['host']
         self.__port = config['port']
         self.__database = config['database']
         self.__user = config['user']
         self.__password = config['password']
-        self.__pool = None
+        self.__pool: pool.ThreadedConnectionPool = None
 
     def connect(self):
         try:
@@ -19,7 +21,7 @@ class PsycoPG2Database:
                 user=self.__user,
                 password=self.__password,
                 minconn=1,
-                maxconn=20
+                maxconn=5
             )
             print("Conectado a la base de datos!")
         except pool.PoolError as e:
@@ -44,20 +46,21 @@ class PsycoPG2Database:
         print("Rollback realizado a la base de datos")
 
     def execute_query(self, *args, key='sistema-bodega'):
-        conn = self.get_connection(key=key)
+        conn = self.__pool.getconn(key=key)
         try:
             result = self.transaction_query(*args, conn=conn)
-            self.commit(conn)
+            conn.commit()
+            print('Consulta realizada correctamente')
             return result
         except pool.PoolError as e:
-            self.rollback(conn)
+            conn.rollback()
             print(f"Error al ejecutar consulta SQL: {e}")
         finally:
-            self.release_connection(key=key)
+            self.__pool.putconn(conn, key=key)
 
     def transaction_query(self, *args, conn=None, key='sistema-bodega'):
         if conn is None:
-            conn = self.get_connection(key=key)
+            conn = self.__pool.getconn(key=key)
         try:
             cur = conn.cursor()
 
@@ -69,7 +72,9 @@ class PsycoPG2Database:
             rows = [dict(zip(columns, row)) for row in results]
 
             cur.close()
+            print('Transacción realizada...')
             return rows
         except pool.PoolError as e:
-            self.rollback(conn)
-            print(f"Error al ejecutar consulta SQL: {e}")
+            conn.rollback()
+            print(f"Error al ejecutar consulta SQL: {e}") 
+            

@@ -1,31 +1,30 @@
 from database.cursor_pg import CursorPG
+    
+class PerfilUsuarioRepository():
+    
+    def __init__(self, cursorPG: CursorPG) -> None:
+        self.cursorPG = cursorPG
 
-
-class PerfilUsuarioRepository(CursorPG):
-
-    @classmethod
-    def create(cls, id_usuario: int, nombre: str, apellido_p: str, apellido_m: str, rol: str, conn=None):
+    def create(self, id_usuario: int, nombre: str, apellido_p: str, apellido_m: str, rol: str, conn=None):
         query = """
             INSERT INTO perfilusuario (id_usuario, nombre, apellido_p, apellido_m, rol)
             VALUES (%s, %s, %s, %s, %s)
             RETURNING id_usuario, nombre, apellido_m, rol;
         """
-        return cls._query(query, (id_usuario, nombre, apellido_p, apellido_m, rol), conn=conn)
+        return self.cursorPG.query(query, (id_usuario, nombre, apellido_p, apellido_m, rol), conn=conn)
 
-    @classmethod
-    def read(cls, id_usuario: int, conn=None):
+    def read(self, id_usuario: int, conn=None):
         query = """
             SELECT * FROM perfilusuario 
             WHERE id_usuario = %s
         """
-        return cls._query(query, (id_usuario,), conn=conn)
+        return self.cursorPG.query(query, (id_usuario,), conn=conn)
 
 
-    @classmethod
-    def delete(cls, id_usuario: int, conn=None):
+    def delete(self, id_usuario: int, conn=None):
         query = """
             DELETE FROM perfilusuario 
             WHERE id_usuario = %s
             RETURNING id_usuario, nombre_usuario, email;
         """
-        return cls._query(query, (id_usuario,), conn=conn)
+        return self.cursorPG.query(query, (id_usuario,), conn=conn)

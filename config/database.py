@@ -10,3 +10,11 @@ POSTGRE_DATABASE_CONFIG = {
     'user': os.getenv("DATABASE_USER"),
     'password': os.getenv("DATABASE_PASSWORD")
 }
+
+POSTGRE_DATABASE_CONFIG_DEV = {
+    'host': os.getenv("DATABASE_HOST_DEV"),
+    'port': os.getenv("DATABASE_PORT_DEV"),
+    'database': os.getenv("DATABASE_NAME_DEV"),
+    'user': os.getenv("DATABASE_USER_DEV"),
+    'password': os.getenv("DATABASE_PASSWORD_DEV")
+}

@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class Movimiento(BaseModel):
-    id_movimiento: Optional[int]
+    id_movimiento: Optional[int] = None
     id_bodega: int
     id_libro: int
     id_usuario: int
