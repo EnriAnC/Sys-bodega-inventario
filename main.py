@@ -13,6 +13,7 @@ from repository.jefebodega import JefeBodegaRepository
 from repository.libro import LibroRepository
 from repository.movimiento import MovimientoRepository
 from repository.perfil_usuario import PerfilUsuarioRepository
+from repository.stock import StockRepository
 from repository.usuario import UsuarioRepository
 
 from routes.bodega import RouterBodega
@@ -32,7 +33,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-postgreDatabase = PGDatabase(POSTGRE_DATABASE_CONFIG)
+postgreDatabase = PGDatabase(POSTGRE_DATABASE_CONFIG_DEV)
 postgreDatabase.connect()
 
 cursorPG = CursorPG(postgreDatabase)
@@ -44,7 +45,10 @@ bodegueroRepository = BodegueroRepository(cursorPG)
 jefeBodegaRepository = JefeBodegaRepository(cursorPG)
 libroRepository = LibroRepository(cursorPG)
 editorialRepository = EditorialRepository(cursorPG)
+
 movimientoRepository = MovimientoRepository(cursorPG)
+stockRepository = StockRepository(cursorPG)
+
 
 routerBodega = RouterBodega(bodegaRepository, perfilUsuarioRepository)
 routerUsuario = RouterUsuario(usuarioRepository, 
@@ -53,11 +57,14 @@ routerUsuario = RouterUsuario(usuarioRepository,
                                jefeBodegaRepository)
 routerLibro = RouterLibro(libroRepository)
 routerEditorial = RouterEditorial(editorialRepository)
-routerMovimiento = RouterMovimiento(movimientoRepository)
+
+routerMovimiento = RouterMovimiento(movimientoRepository, stockRepository)
+
 
 app.include_router(routerBodega)
 app.include_router(routerUsuario)
 app.include_router(routerLibro)
 app.include_router(routerEditorial)
+
 app.include_router(routerMovimiento)
 

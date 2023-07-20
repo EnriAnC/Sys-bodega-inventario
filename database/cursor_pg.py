@@ -22,7 +22,9 @@ class CursorPG:
 
     def query(self, *args, conn=None):
         if conn is None:
+            print('Ejecutando consulta...')
             return self._execute_query(*args)
+        print('Ejecutando transacción...')
         return self._transaction_query(*args, conn=conn)
 
     def commit(self, conn):

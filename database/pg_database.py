@@ -50,7 +50,7 @@ class PGDatabase:
         try:
             result = self.transaction_query(*args, conn=conn)
             conn.commit()
-            print('Consulta realizada correctamente')
+            print('Se ha realizado correctamente')
             return result
         except pool.PoolError as e:
             conn.rollback()
@@ -72,7 +72,6 @@ class PGDatabase:
             rows = [dict(zip(columns, row)) for row in results]
 
             cur.close()
-            print('Transacción realizada...')
             return rows
         except pool.PoolError as e:
             conn.rollback()

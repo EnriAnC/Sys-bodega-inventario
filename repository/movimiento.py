@@ -15,12 +15,12 @@ class MovimientoRepository():
         """
         return self.cursorPG.query(query, (id_bodega, id_libro, id_usuario, fecha_despacho, cantidad_libro), conn=conn)
     
-    def read(self, id_bodega: int, conn=None):
+    def read(self, id_movimiento: int, conn=None):
         query = """
             SELECT * FROM movimiento 
             WHERE id_movimiento = %s
         """
-        return self.cursorPG.query(query, (id_bodega, ), conn=conn)
+        return self.cursorPG.query(query, (id_movimiento, ), conn=conn)
 
     def readNRows(self, n = 10, conn=None):
         query = """
