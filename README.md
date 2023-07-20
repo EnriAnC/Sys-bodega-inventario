@@ -2,9 +2,12 @@
 
 Este es un proyecto de inventario de bodegas desarrollado con FastAPI.
 
+Descarga de proyecto comprimido (sin necesidad de instalación), contiene front, back y código SQL: https://drive.google.com/file/d/1oOCT4FtI8hFxmyv5lfCsmqXN96Yy7QdI/view?usp=sharing
+
 ## Instalación
 
-Sigue estos pasos para configurar el proyecto en tu entorno local.
+Sigue estos pasos para configurar el proyecto en tu entorno local.\
+Puedes apoyarte en este video donde se sigue los pasos de instalación: https://www.youtube.com/watch?v=yaMCFwixE3Y
 
 ### Prerrequisitos
 
