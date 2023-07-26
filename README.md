@@ -1,8 +1,8 @@
 # Sys-bodega-inventario
 
-Este es un proyecto de inventario de bodegas desarrollado con FastAPI.
+Este es un proyecto Backend de inventario de bodegas desarrollado con FastAPI.
 
-Descarga de proyecto comprimido (sin necesidad de instalación), contiene front, back y código SQL: https://drive.google.com/file/d/1oOCT4FtI8hFxmyv5lfCsmqXN96Yy7QdI/view?usp=sharing
+Preview: https://sistema-bodegas-inventario.onrender.com/docs
 
 ## Instalación
 
