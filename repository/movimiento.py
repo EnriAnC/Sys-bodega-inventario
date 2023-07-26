@@ -29,10 +29,19 @@ class MovimientoRepository():
         """
         return self.cursorPG.query(query, (n,), conn=conn)
 
-    def delete(self, id_usuario: int, conn=None):
+    def delete(self, id_movimiento: int, conn=None):
         query = """
             DELETE FROM movimiento 
             WHERE id_movimiento = %s
             RETURNING id_movimiento, id_bodega, id_libro, id_usuario, cantidad_libro;
         """
-        return self.cursorPG.query(query, (id_usuario,), conn=conn)
+        return self.cursorPG.query(query, (id_movimiento,), conn=conn)
+    
+    def update_fecha_ingreso(self, id_movimiento: int, fecha_ingreso: int, conn=None):
+        query = """
+            UPDATE movimiento 
+            SET fecha_ingreso = %s
+            WHERE id_movimiento = %s
+            RETURNING id_movimiento, id_bodega, id_libro, id_usuario, cantidad_libro, fecha_despacho, fecha_ingreso;
+        """
+        return self.cursorPG.query(query, (fecha_ingreso, id_movimiento,), conn=conn)

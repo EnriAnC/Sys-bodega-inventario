@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException
+from models.movimiento import InputCreateMovimiento
 
 from repository.movimiento import MovimientoRepository
 
@@ -24,43 +25,50 @@ class RouterMovimiento(APIRouter):
                 raise HTTPException(status_code=500, detail=str(e))
             
         @self.post("/movimientos", tags=['movimientos'])
-        def insert_movimiento(
-                id_bodega_origen,
-                id_bodega_destino, 
-                id_libro, 
-                id_usuario, 
-                cantidad_libro,
-                fecha_despacho = datetime.now(timezone.utc)
-        ):
+        def insert_movimiento( inputCreateMovimiento: InputCreateMovimiento ):
             try:
                 
+                id_bodega_origen, id_bodega_destino, id_libro, id_usuario, cantidad_libro, fecha_despacho = inputCreateMovimiento.dict().values()
+                
+                if cantidad_libro <= 0:
+                    raise Exception("La cantidad de libros debe ser mayor a 0")
+                
+                if fecha_despacho is None:
+                    fecha_despacho = datetime.now(timezone.utc)
+                
                 res1 = self.stockRepository.decrement_stock_bodega(id_bodega_origen, id_libro, cantidad_libro)
-                print(res1)
                 if res1[0]["stock"] < 0:
                     self.stockRepository.increment_stock_bodega(id_bodega_origen, id_libro, cantidad_libro)
                     raise Exception("El stock no puede queda menor a 0")
                 
                 res2 = self.stockRepository.increment_stock_bodega(id_bodega_destino, id_libro, cantidad_libro)
-                print(res2)
                 if res2 is None or len(res2) == 0:
-                    res3 = self.stockRepository.create(id_bodega_destino, id_libro, cantidad_libro)
-                    print(res3)
+                    self.stockRepository.create(id_bodega_destino, id_libro, cantidad_libro)
                 
                 movimiento = self.movimientoRepository.create(id_bodega_destino, id_libro, id_usuario, fecha_despacho, cantidad_libro)
-                print(movimiento)
                 
                 if movimiento is None or len(movimiento)==0:
                     raise Exception('No es posible insertar movimiento')
                 
-                
                 respuesta = {
-                    'message': 'Movimiento creada correctamente',
+                    'message': 'Movimiento creado correctamente',
                     'data': movimiento
                 }
 
                 return respuesta
             except Exception as e:
                 raise HTTPException(status_code=500, detail=str(e))
+            
+        @self.put("/movimientos", tags=['movimientos'])
+        def update_fecha_ingreso( id_movimiento: int, fecha_ingreso: int ):
+            try:
+                result = self.movimientoRepository.update_fecha_ingreso(id_movimiento, fecha_ingreso)
+                return result
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=str(e))
+            
+            
+        @self.post
             
         @self.get("/movimientos/{id_movimiento}", tags=['movimientos'])
         def get_movimiento_by_id(id_movimiento: int):

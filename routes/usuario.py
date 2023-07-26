@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, Response
 
 from starlette.responses import JSONResponse
 
-from models.usuario import LoginUsuario
+from models.usuario import LoginUsuario, RegistrarUsuario
 
 from repository.bodeguero import BodegueroRepository
 from repository.jefebodega import JefeBodegaRepository
@@ -27,7 +27,7 @@ class RouterUsuario(APIRouter):
         self.jefeBodegaRepository = jefeBodegaRepository
 
         @self.get("/usuarios", tags=['Usuarios'])
-        def obtener_usuario_por_id(id_usuario: int, ):
+        async def obtener_usuario_por_id(id_usuario: int, ):
             result = self.usuarioRepository.read(id_usuario)
 
             if not result or len(result) == 0:
@@ -37,6 +37,20 @@ class RouterUsuario(APIRouter):
                 'message': 'Se ha obtenido el usuario correctamente',
                 'data': result
             }, status_code=200)
+            
+        @self.get("/usuarios/bodegueros", tags=['Usuarios'])
+        async def obtener_bodegueros():
+            result = self.bodegueroRepository.getAll()
+            if not result or len(result) == 0:
+                return HTTPException(status_code=404, detail='no existe')
+            return result
+        
+        @self.get("/usuarios/jefebodegas", tags=['Usuarios'])
+        async def obtener_jefebodegas():
+            result = self.jefeBodegaRepository.getAll()
+            if not result or len(result) == 0:
+                return HTTPException(status_code=404, detail='no existe')
+            return result
 
         @self.post("/login", tags=['Usuarios'])
         async def iniciar_sesion(usuario: LoginUsuario, response: Response):
@@ -66,13 +80,9 @@ class RouterUsuario(APIRouter):
                 self.usuarioRepository.cursorPG.release(key=key)
 
         @self.post("/register", tags=['Usuarios'])
-        async def registrar_usuario(nombre_usuario: str,
-                                    email: str,
-                                    password: str,
-                                    nombre: str,
-                                    rol: str,
-                                    apellido_p: str,
-                                    apellido_m: Union[str, None] = None,):
+        async def registrar_usuario( inputRegistro: RegistrarUsuario ):
+            print(inputRegistro)
+            nombre_usuario, email, password, nombre, rol, apellido_p, apellido_m= inputRegistro.dict().values()
             key = str(uuid4())
             conn_transaction = self.usuarioRepository.cursorPG.open_transaction(key=key)
             try:
@@ -88,7 +98,7 @@ class RouterUsuario(APIRouter):
                 else:
                     raise Exception('rol no existente')
 
-                self.usuarioRepository.commit(conn_transaction)
+                self.usuarioRepository.cursorPG.commit(conn_transaction)
 
                 return JSONResponse(content={
                     'message': 'Usuario creado correctamente',

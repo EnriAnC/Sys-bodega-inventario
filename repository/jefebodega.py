@@ -13,6 +13,13 @@ class JefeBodegaRepository():
         """
         return self.cursorPG.query(query, (id_usuario, nombre, apellido_p, apellido_m, rol), conn=conn)
 
+    def getAll(self, conn=None):
+        query = """
+            SELECT * FROM jefebodega
+        """
+        return self.cursorPG.query(query, conn=conn)
+    
+    
     def read(self, id_usuario: int, conn=None):
         query = """
             SELECT * FROM jefebodega 

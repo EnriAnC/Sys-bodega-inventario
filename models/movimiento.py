@@ -16,8 +16,8 @@ class Movimiento(BaseModel):
 
 class InputCreateMovimiento(BaseModel):
     id_bodega_origen: int
-    id_bodega_destino: Optional[int] = None
+    id_bodega_destino: int
     id_libro: int
     id_usuario: int
     cantidad_libro: int
-    fecha_despacho: Optional[datetime] = None
+    fecha_despacho: Optional[str] = None

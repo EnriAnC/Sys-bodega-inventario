@@ -10,7 +10,7 @@ class LibroRepository():
         query = """
             INSERT INTO libro (id_libro, id_editorial, nombre_libro, autor)
             VALUES (default, %s, %s, %s)
-            RETURNING id_bodega, id_usuario, nombre_bodega, direccion_bodega;
+            RETURNING id_libro, id_editorial, nombre_libro, autor;
         """
         return self.cursorPG.query(query, (id_editorial, nombre_libro, autor), conn=conn)
     
@@ -28,6 +28,13 @@ class LibroRepository():
             WHERE id_bodega = %s
         """
         return self.cursorPG.query(query, (id_bodega, ), conn=conn)
+    
+    def get_stock_by_libro_id(self, id_libro: int, conn=None):
+        query = """
+            SELECT * FROM stock 
+            WHERE id_libro = %s
+        """
+        return self.cursorPG.query(query, (id_libro, ), conn=conn)
 
     def readNRows(self, n = 10, conn=None):
         query = """

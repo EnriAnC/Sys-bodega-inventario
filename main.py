@@ -15,12 +15,15 @@ from repository.movimiento import MovimientoRepository
 from repository.perfil_usuario import PerfilUsuarioRepository
 from repository.stock import StockRepository
 from repository.usuario import UsuarioRepository
+from repository.categoria import CategoriaRepository
+
 
 from routes.bodega import RouterBodega
 from routes.editorial import RouterEditorial
 from routes.libro import RouterLibro
 from routes.movimiento import RouterMovimiento
 from routes.usuario import RouterUsuario
+from routes.categoria import RouterCategoria
 
 
 app = FastAPI()
@@ -33,7 +36,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-postgreDatabase = PGDatabase(POSTGRE_DATABASE_CONFIG_DEV)
+postgreDatabase = PGDatabase(POSTGRE_DATABASE_CONFIG)
 postgreDatabase.connect()
 
 cursorPG = CursorPG(postgreDatabase)
@@ -45,20 +48,21 @@ bodegueroRepository = BodegueroRepository(cursorPG)
 jefeBodegaRepository = JefeBodegaRepository(cursorPG)
 libroRepository = LibroRepository(cursorPG)
 editorialRepository = EditorialRepository(cursorPG)
-
 movimientoRepository = MovimientoRepository(cursorPG)
 stockRepository = StockRepository(cursorPG)
 
+categoriaRepository = CategoriaRepository(cursorPG)
 
 routerBodega = RouterBodega(bodegaRepository, perfilUsuarioRepository)
 routerUsuario = RouterUsuario(usuarioRepository, 
                                perfilUsuarioRepository, 
                                bodegueroRepository,
                                jefeBodegaRepository)
-routerLibro = RouterLibro(libroRepository)
+routerLibro = RouterLibro(libroRepository, categoriaRepository, stockRepository)
 routerEditorial = RouterEditorial(editorialRepository)
-
 routerMovimiento = RouterMovimiento(movimientoRepository, stockRepository)
+routerCategoria = RouterCategoria(categoriaRepository)
+
 
 
 app.include_router(routerBodega)
@@ -67,4 +71,6 @@ app.include_router(routerLibro)
 app.include_router(routerEditorial)
 
 app.include_router(routerMovimiento)
+
+app.include_router(routerCategoria)
 

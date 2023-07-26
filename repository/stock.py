@@ -20,6 +20,13 @@ class StockRepository():
             WHERE id_bodega = %s
         """
         return self.cursorPG.query(query, (id_bodega, ), conn=conn)
+    
+    def getByLibroId(self, id_libro: int, conn=None):
+        query = """
+            SELECT * FROM stock 
+            WHERE id_libro = %s
+        """
+        return self.cursorPG.query(query, (id_libro, ), conn=conn)
 
     def readNRows(self, n = 10, conn=None):
         query = """
