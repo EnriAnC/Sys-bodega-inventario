@@ -9,6 +9,13 @@ Preview: https://sistema-bodegas-inventario.onrender.com/docs
 Sigue estos pasos para configurar el proyecto en tu entorno local.\
 Puedes apoyarte en este video donde se sigue los pasos de instalación: https://www.youtube.com/watch?v=yaMCFwixE3Y
 
+## Antes de continuar
+
+Casi al final de los pasos de instalación se configuran las variables de entorno cuales dependerá de cada uno. Debes configurar tu propio entorno PostreSQL y para ello te comparto un SQL con la creación de las tablas y algunas inserción de datos.
+- Creación tablas: https://drive.google.com/file/d/18vU6iLWrqvvcv6dJJzlXebpGNoWiW5Dd/view?usp=sharing, 
+- Inserción datos: https://drive.google.com/file/d/1Xh4o0mXVSha75qx3xn87d3DTCwGwe_vK/view?usp=sharing
+- Recomendación de app para levantar PostgreSQL en la nube gratuitamente (20mb max gratuitos): https://www.elephantsql.com/
+- 
 ### Prerrequisitos
 
 Asegúrate de tener instalado lo siguiente:
@@ -16,6 +23,7 @@ Asegúrate de tener instalado lo siguiente:
 - Python (versión 3.8 o superior)
 - pip
 - virtualenv
+- Postgresql
 
 ### Pasos de Instalación
 
