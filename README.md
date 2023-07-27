@@ -15,7 +15,7 @@ Casi al final de los pasos de instalación se configuran las variables de entorn
 - Creación tablas: https://drive.google.com/file/d/18vU6iLWrqvvcv6dJJzlXebpGNoWiW5Dd/view?usp=sharing, 
 - Inserción datos: https://drive.google.com/file/d/1Xh4o0mXVSha75qx3xn87d3DTCwGwe_vK/view?usp=sharing
 - Recomendación de app para levantar PostgreSQL en la nube gratuitamente (20mb max gratuitos): https://www.elephantsql.com/
-- 
+  
 ### Prerrequisitos
 
 Asegúrate de tener instalado lo siguiente:
